@@ -5,6 +5,7 @@ import Setups from "@/components/home/Setups";
 import Free from "@/components/home/Free";
 import OfferStack from "@/components/home/OfferStack";
 import Pricing from "@/components/home/Pricing";
+import FAQ from "@/components/home/FAQ";
 import Footer from "@/components/home/Footer";
 
 export default function Page() {
@@ -20,6 +21,7 @@ export default function Page() {
         <Free />
         <OfferStack />
         <Pricing seatsLeft={seatsLeft} />
+        <FAQ />
       </main>
       <Footer seatsLeft={seatsLeft} />
     </>

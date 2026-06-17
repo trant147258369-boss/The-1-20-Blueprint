@@ -91,9 +91,9 @@ export function Navbar({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: Navb
               ))}
             </nav>
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f5a623]/[0.10] border border-[#f5a623]/30 text-xs font-bold text-[#f5a623]">
-                {seatsLeft} LEFT
-              </span>
+              <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }} className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f5a623]/[0.12] border border-[#f5a623]/40 text-xs font-black text-[#f5a623]">
+                ● {seatsLeft} LEFT
+              </motion.span>
               <motion.a
                 href="#pricing"
                 whileHover={{ scale: 1.05 }}
@@ -109,9 +109,9 @@ export function Navbar({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: Navb
                   boxShadow: { duration: 2.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
                   scale: { type: "spring", stiffness: 400, damping: 17 },
                 }}
-                className="inline-flex items-center px-4 md:px-5 py-2.5 rounded-lg bg-[#f5a623] text-[#040e1c] font-bold text-sm"
+                className="inline-flex items-center gap-1.5 px-4 md:px-6 py-2.5 rounded-lg bg-[#f5a623] text-[#040e1c] font-black text-sm md:text-base"
               >
-                Claim Seat
+                Claim Seat <span aria-hidden>→</span>
               </motion.a>
             </div>
           </div>
