@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+:root {
+  --font-outfit: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  background: #040e1c;
+  color: #ffffff;
+  font-family: var(--font-outfit);
+  -webkit-font-smoothing: antialiased;
+}

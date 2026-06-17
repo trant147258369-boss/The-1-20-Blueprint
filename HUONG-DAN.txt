@@ -1,0 +1,55 @@
+==========================================================
+ THE 1:20 BLUEPRINT — STARTER (Next.js 16 + Tailwind v4)
+ Project MỚI, folder MỚI. KHÔNG đụng crypto-course cũ.
+==========================================================
+
+CÁI GÌ TRONG ZIP (đã build-verify PASS trong môi trường giống m):
+  package.json            next 16 + tailwind v4 + framer-motion + lucide-react
+  next.config.ts
+  tsconfig.json
+  postcss.config.mjs
+  .gitignore
+  app/layout.tsx          nạp Outfit (weight 400-900) qua <link> Google Fonts
+  app/globals.css         @import tailwindcss + nền #040e1c + font Outfit
+  app/page.tsx            render <Hero />
+  components/home/Hero.tsx Hero Midnight Jade, headline "Heavy slam"
+
+CÁC BƯỚC (Windows + Cursor)
+  1. Giải nén zip vào folder MỚI, vd:
+        C:\Users\ADMIN\Course\the-120-blueprint
+     (đừng giải nén đè vào crypto-course)
+
+  2. Mở folder đó trong Cursor.
+
+  3. Cài deps (1 lần, cần internet):
+        npm install
+
+  4. Chạy thử local:
+        npm run dev
+     -> mở http://localhost:3000 xem Hero.
+
+  5. BUILD VERIFY trước khi push (BẮT BUỘC):
+        npm run build
+     -> phải thấy "✓ Compiled successfully".
+
+  6. (Tùy chọn) đưa lên GitHub repo MỚI + Vercel project MỚI:
+        git init
+        git add .
+        git commit -m "init: The 1:20 Blueprint - Hero (Midnight Jade)"
+        git branch -M main
+        git remote add origin <URL repo MỚI>
+        git push -u origin main
+     -> import repo vào Vercel = project mới, domain mới.
+     (KHÔNG push vào repo crypto-course cũ.)
+
+LƯU Ý THẲNG
+  - Starter này MỚI CHỈ CÓ HERO. Vì m chọn "làm lại từ đầu", nên Pricing /
+    Testimonial / Setups / Free / Navbar / Dashboard CHƯA có — mình build dần
+    từng đợt (m paste component 21st, t ráp). Các section trên course cũ
+    crypto-course KHÔNG tự chuyển sang đây.
+  - Font Outfit nạp bằng <link> (không phải next/font) vì sandbox build của t
+    chặn Google Fonts. Cách này chạy ổn mọi nơi. Muốn tối ưu hơn thì đổi sang
+    next/font/google sau — nó sẽ build được trên máy m/Vercel.
+  - CTA trong Hero đang trỏ anchor tạm #pricing / #free / #setups. Khi mình
+    build các section đó, anchor sẽ khớp id tương ứng.
+==========================================================
