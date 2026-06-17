@@ -50,7 +50,7 @@ export const dashboardSetups: DashboardSetup[] = [
     type: "Premium / Discount Zone Reversal",
     color: "#00e5a8",
     // >>> PASTE YOUR SETUP-5 VIDEO ID BELOW (youtu.be/XXXX -> "XXXX") <<<
-    videoId: "REPLACE_WITH_S05_ID",
+    videoId: "sdqffic2Itc",
     blurb: "The crown-jewel 1:20 core reversal from premium/discount extremes.",
   },
 ];
