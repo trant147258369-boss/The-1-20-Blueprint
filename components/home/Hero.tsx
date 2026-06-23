@@ -1,8 +1,43 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
-import { Circle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { motion, MotionConfig, useScroll, useTransform } from "framer-motion";
+import HeroChart from "./charts/HeroChart";
+import { Circle, Clock, Lock } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Eyebrow } from "./Eyebrow";
+import { PrimaryCTA } from "./PrimaryCTA";
+
+// Enrollment genuinely opens/closes monthly — the countdown targets the real
+// month-end in Vietnam time (ICT, UTC+7, no DST) and rolls itself to the next
+// month the instant one passes. No hardcoded date, no fake reset on refresh.
+const ICT_OFFSET_MS = 7 * 60 * 60 * 1000;
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+function monthEndUTC(ictYear: number, ictMonth: number): number {
+  // Last instant of `ictMonth` (0-indexed) at 23:59:59 ICT == day 0 of the following month
+  return Date.UTC(ictYear, ictMonth + 1, 0, 23, 59, 59) - ICT_OFFSET_MS;
+}
+
+function getNextDeadline(): Date {
+  const now = new Date();
+  const ictNow = new Date(now.getTime() + ICT_OFFSET_MS);
+  const ictYear = ictNow.getUTCFullYear();
+  const ictMonth = ictNow.getUTCMonth();
+
+  let deadlineMs = monthEndUTC(ictYear, ictMonth);
+  if (now.getTime() > deadlineMs) {
+    deadlineMs = monthEndUTC(ictYear, ictMonth + 1);
+  }
+  return new Date(deadlineMs);
+}
+
+function formatDeadlineLabel(deadline: Date): string {
+  const ict = new Date(deadline.getTime() + ICT_OFFSET_MS);
+  return `${MONTH_NAMES[ict.getUTCMonth()]} ${ict.getUTCDate()}`;
+}
 
 function cn(...classes: Array<string | undefined | false | null>): string {
   return classes.filter(Boolean).join(" ");
@@ -65,8 +100,6 @@ interface HeroProps {
   /** Real scarcity — Inner Circle capped at 10. */
   seatsLeft?: number;
   seatsTotal?: number;
-  /** REAL deadline (ISO). Set to your actual enrollment close / price-increase date. */
-  deadline?: string;
 }
 
 function pad(n: number) {
@@ -76,18 +109,23 @@ function pad(n: number) {
 export function Hero({
   seatsLeft = 8,
   seatsTotal = 10,
-  deadline = "2026-06-30T23:59:59",
 }: HeroProps) {
   const [mounted, setMounted] = useState(false);
-  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0, done: false });
+  const [deadline, setDeadline] = useState<Date>(() => getNextDeadline());
+  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [urgencyIndex, setUrgencyIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const bgY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
 
   useEffect(() => {
     setMounted(true);
-    const target = new Date(deadline).getTime();
+    const target = deadline.getTime();
     const tick = () => {
       const diff = target - Date.now();
       if (diff <= 0) {
-        setT({ d: 0, h: 0, m: 0, s: 0, done: true });
+        // The month just ended — roll straight to the next real month-end.
+        setDeadline(getNextDeadline());
         return;
       }
       setT({
@@ -95,7 +133,6 @@ export function Hero({
         h: Math.floor((diff / 3600000) % 24),
         m: Math.floor((diff / 60000) % 60),
         s: Math.floor((diff / 1000) % 60),
-        done: false,
       });
     };
     tick();
@@ -103,6 +140,19 @@ export function Hero({
     return () => clearInterval(id);
   }, [deadline]);
 
+  // Rotate the honest urgency phrasing per visit so it doesn't feel static.
+  // Picked client-side only (post-mount) to avoid a server/client text mismatch.
+  useEffect(() => {
+    setUrgencyIndex(Math.floor(Math.random() * 4));
+  }, []);
+
+  const deadlineLabel = formatDeadlineLabel(deadline);
+  const urgencyPhrasings = [
+    `Enrollment closes ${deadlineLabel}. No waitlist.`,
+    `Doors close ${deadlineLabel}. Next intake is next month.`,
+    `${deadlineLabel} is the cutoff for this intake.`,
+    "Few seats left this intake.",
+  ];
   const claimed = Math.max(0, seatsTotal - seatsLeft);
   const claimedPct = Math.round((claimed / seatsTotal) * 100);
 
@@ -128,8 +178,29 @@ export function Hero({
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#040e1c]">
+      <section ref={sectionRef} className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#040e1c]">
         <div className="absolute inset-0 bg-gradient-to-br from-[#00e5a8]/[0.05] via-transparent to-[#f5a623]/[0.05] blur-3xl" />
+
+        {/* Dark trading charts background image with low opacity */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden"
+        >
+          <motion.img
+            src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80&auto=format&fit=crop"
+            alt="Dark trading charts on monitor background"
+            style={{ y: bgY, width: "100%", height: "120%", objectFit: "cover", opacity: 0.25, display: "block", willChange: "transform" }}
+          />
+        </motion.div>
+
+        <div className="absolute inset-0 pointer-events-none -z-10" style={{ opacity: 0.4 }}>
+          <div className="w-full h-full">
+            <HeroChart className="w-full h-full" />
+          </div>
+        </div>
 
         <div className="absolute inset-0 overflow-hidden">
           <ElegantShape delay={0.3} width={600} height={140} rotate={12} gradient="from-[#00e5a8]/[0.15]" className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]" />
@@ -177,7 +248,7 @@ export function Hero({
                   transition={{ duration: 1.4, delay: 0.8, ease: "easeOut" }}
                 />
               </div>
-              <p className="mt-2 text-xs text-white/40 tracking-wide">
+              <p className="mt-2 text-sm text-white/40 tracking-wide">
                 {claimed} of {seatsTotal} seats already claimed
               </p>
             </motion.div>
@@ -186,19 +257,17 @@ export function Hero({
             <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
               <h1 className="uppercase mb-6 md:mb-8 leading-[0.9]">
                 <span className="block text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-[-0.01em] text-white">
-                  The <span className="text-[#f5a623]">1:20</span> Trading
+                  Trade with an asymmetric edge.
                 </span>
-                <span className="block text-6xl sm:text-7xl md:text-9xl font-black tracking-[-0.03em] bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">
-                  Blueprint
+                <span className="block text-6xl sm:text-7xl md:text-9xl font-black tracking-[-0.03em] text-transparent bg-clip-text bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">
+                  Risk 1R. Target 20R.
                 </span>
               </h1>
             </motion.div>
 
             <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
               <p className="text-lg sm:text-xl md:text-2xl text-white/55 mb-8 leading-relaxed font-light tracking-wide max-w-2xl mx-auto px-2">
-                Five Smart Money Concept setups, one asymmetric framework. Read
-                liquidity, structure, and order blocks the way institutions
-                actually move price.
+                Stop trading noise and switch to a premium framework built around liquidity, structure and institutional flow. Get repeatable setups that make your risk predictable and your edge visible.
               </p>
             </motion.div>
 
@@ -210,9 +279,7 @@ export function Hero({
               animate="visible"
               className="mb-10"
             >
-              <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-3">
-                {mounted && t.done ? "Enrollment closed" : "Enrollment closes in"}
-              </p>
+              <Eyebrow urgent icon={Clock}>Enrollment closes in</Eyebrow>
               <div className="flex items-center justify-center gap-2 md:gap-3">
                 {countItems.map(([label, val]) => (
                   <div
@@ -222,7 +289,7 @@ export function Hero({
                     <div className="text-2xl md:text-4xl font-black text-white tabular-nums leading-none">
                       {mounted ? pad(val) : "--"}
                     </div>
-                    <div className="mt-1 text-[10px] md:text-xs uppercase tracking-widest text-white/40">
+                    <div className="mt-1 text-sm uppercase tracking-widest text-white/40">
                       {label}
                     </div>
                   </div>
@@ -236,52 +303,59 @@ export function Hero({
               variants={fadeUpVariants}
               initial="hidden"
               animate="visible"
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-4xl mx-auto"
             >
-              <motion.a
-                href="#pricing"
-                whileHover={{ scale: 1.045 }}
-                whileTap={{ scale: 0.97 }}
-                animate={{
-                  boxShadow: [
-                    "0 8px 30px 0 rgba(245,166,35,0.25)",
-                    "0 10px 44px 0 rgba(245,166,35,0.55)",
-                    "0 8px 30px 0 rgba(245,166,35,0.25)",
-                  ],
-                }}
-                transition={{
-                  boxShadow: { duration: 2.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-                  scale: { type: "spring", stiffness: 400, damping: 17 },
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#f5a623] text-[#040e1c] font-bold text-base md:text-lg tracking-wide"
-              >
-                Claim your seat
-              </motion.a>
+              <PrimaryCTA size="lg">Claim my seat now</PrimaryCTA>
 
               <motion.a
                 href="#free"
-                whileHover={{ scale: 1.045, backgroundColor: "rgba(0,229,168,0.10)" }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl border border-[#00e5a8]/45 text-[#33eab8] font-semibold text-base md:text-lg tracking-wide"
+                whileHover={{ scale: 1.06, boxShadow: "0 0 28px rgba(0,229,168,0.6)" }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 380, damping: 16 }}
+                className="w-full sm:w-auto inline-flex items-center justify-center px-12 py-6 rounded-2xl border border-[#00e5a8]/45 text-[#33eab8] font-black text-xl md:text-2xl tracking-wide shadow-[0_12px_40px_-20px_rgba(0,229,168,0.5)] transition-colors duration-300 hover:bg-[#00e5a8] hover:text-[#040e1c]"
               >
-                Watch 2 free lessons
+                Unlock 2 free lessons
               </motion.a>
 
               <motion.a
                 href="#setups"
                 initial="rest"
-                whileHover="hover"
-                className="group inline-flex items-center gap-1.5 text-sm md:text-base text-white/45 hover:text-white/80 transition-colors"
+                whileHover={{ scale: 1.04 }}
+                className="group inline-flex items-center gap-2 text-lg md:text-xl text-white/65 hover:text-white transition-colors"
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
-                See the 5 setups
+                Explore the 5 setups
                 <motion.span
-                  variants={{ rest: { x: 0 }, hover: { x: 5 } }}
-                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", repeatDelay: 2 }}
                 >
                   →
                 </motion.span>
               </motion.a>
+            </motion.div>
+            <motion.p
+              custom={4.5}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-white/40 tracking-wide"
+            >
+              <motion.span
+                className="inline-flex h-1.5 w-1.5 rounded-full bg-[#33eab8]"
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+              You&apos;ll be chatting with Thomas directly. Lifetime access, live reviews included.
+            </motion.p>
+            <motion.div
+              custom={5}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-4 inline-flex items-center justify-center gap-2.5 text-base md:text-lg font-black uppercase tracking-[0.1em] text-[#f5a623]"
+            >
+              <Lock className="h-4 w-4 md:h-5 md:w-5 shrink-0" />
+              <span>{urgencyPhrasings[urgencyIndex]}</span>
             </motion.div>
           </div>
         </div>

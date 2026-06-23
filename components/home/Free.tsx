@@ -3,6 +3,8 @@
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Play, Calculator, Lock, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Eyebrow } from "./Eyebrow";
+import { PrimaryCTA } from "./PrimaryCTA";
 
 interface FreeLesson {
   videoId: string;
@@ -37,8 +39,8 @@ export function Free() {
       <section id="free" className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-14">
-            <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-4">Watch free — no card needed</p>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
+            <Eyebrow icon={Play}>Watch free — no card needed</Eyebrow>
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Two foundation lessons.
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">Zero cost.</span>
@@ -70,11 +72,11 @@ export function Free() {
                       <Play className="h-7 w-7 ml-1 fill-current" />
                     </span>
                   </span>
-                  <span className="absolute top-4 left-4 inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#00e5a8]/[0.15] text-[#33eab8] text-xs font-black">FREE</span>
+                  <span className="absolute top-4 left-4 inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#00e5a8]/[0.15] text-[#33eab8] text-sm font-black">FREE</span>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">{l.title}</h3>
-                  <p className="text-sm text-white/50 leading-snug">{l.desc}</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{l.title}</h3>
+                  <p className="text-base text-white/50 leading-snug">{l.desc}</p>
                 </div>
               </motion.button>
             ))}
@@ -82,13 +84,13 @@ export function Free() {
 
           {/* risk calculator + free→locked contrast */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex flex-col gap-4">
-            <div className="flex items-center gap-4 rounded-2xl border border-[#00e5a8]/20 bg-[#071828]/50 px-6 py-5">
-              <span className="inline-flex items-center justify-center h-11 w-11 rounded-xl bg-[#00e5a8]/[0.12] text-[#00e5a8] shrink-0">
-                <Calculator className="h-5 w-5" />
+            <div className="flex items-center gap-4 rounded-2xl border border-[#00e5a8]/20 bg-[#071828]/50 px-6 py-6">
+              <span className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-[#00e5a8]/[0.12] text-[#00e5a8] shrink-0">
+                <Calculator className="h-6 w-6" />
               </span>
               <div>
-                <p className="text-base font-bold text-white">1:20 Risk Calculator</p>
-                <p className="text-sm text-white/50">Size every trade to your asymmetric target in seconds — free with the lessons.</p>
+                <p className="text-lg font-bold text-white">1:20 Risk Calculator</p>
+                <p className="text-base text-white/50">Size every trade to your asymmetric target in seconds — free with the lessons.</p>
               </div>
             </div>
 
@@ -97,9 +99,7 @@ export function Free() {
                 <Lock className="h-5 w-5 text-[#f5a623] shrink-0" />
                 <p className="text-sm md:text-base text-white/70">These two show you the <span className="text-white font-semibold">map</span>. The 5 paid setups give you the <span className="text-[#33eab8] font-semibold">entries</span>.</p>
               </div>
-              <motion.a href="#pricing" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="shrink-0 inline-flex items-center px-5 py-3 rounded-xl bg-[#f5a623] text-[#040e1c] font-bold text-sm">
-                Unlock the 5 setups
-              </motion.a>
+              <PrimaryCTA size="sm" className="shrink-0">Unlock the 5 setups</PrimaryCTA>
             </div>
           </motion.div>
         </div>

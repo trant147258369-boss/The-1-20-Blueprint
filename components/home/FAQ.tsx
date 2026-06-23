@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { Eyebrow } from "./Eyebrow";
 
 const faqs: Array<{ q: string; a: string }> = [
   { q: "I'm completely new to trading — will this work for me?", a: "Yes. Start with the two free foundation lessons, then the five setups are taught step by step. No prior edge is assumed — but you do have to put in the screen time to learn the models." },
@@ -23,7 +24,7 @@ export function FAQ() {
       <section id="faq" className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
         <div className="relative z-10 max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-14">
-            <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-4">Before you talk yourself out of it</p>
+            <Eyebrow>Before you talk yourself out of it</Eyebrow>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Every objection,
               <br />

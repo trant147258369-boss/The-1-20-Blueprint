@@ -2,6 +2,7 @@
 
 import { motion, MotionConfig } from "framer-motion";
 import { Lock } from "lucide-react";
+import { Eyebrow } from "./Eyebrow";
 
 interface Setup {
   code: string;
@@ -35,13 +36,13 @@ export function Setups() {
             transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
             className="text-center mb-16"
           >
-            <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-4">The core arsenal</p>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
+            <Eyebrow>The core arsenal</Eyebrow>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Five setups.
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">One asymmetric edge.</span>
             </h2>
-            <p className="mt-5 text-base md:text-lg text-white/45 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg md:text-xl text-white/45 max-w-2xl mx-auto">
               Each setup is a precise, repeatable entry model. All five unlock inside the member dashboard.
             </p>
           </motion.div>
@@ -71,21 +72,21 @@ export function Setups() {
 
                 <div className="relative flex items-center justify-between mb-5">
                   <span
-                    className="text-sm font-black tracking-widest tabular-nums"
+                    className="text-base font-black tracking-widest tabular-nums"
                     style={{ color: s.color }}
                   >
                     {s.code}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.10] text-[11px] font-semibold uppercase tracking-wide text-white/55">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.10] text-sm font-semibold uppercase tracking-wide text-white/55">
                     <Lock className="h-3 w-3" /> Paid
                   </span>
                 </div>
 
-                <h3 className="relative text-xl md:text-2xl font-bold text-white mb-1.5">{s.name}</h3>
-                <p className="relative text-sm text-white/45 mb-5">{s.type}</p>
+                <h3 className="relative text-2xl md:text-3xl font-bold text-white mb-1.5">{s.name}</h3>
+                <p className="relative text-base text-white/45 mb-5">{s.type}</p>
 
                 <span
-                  className="relative inline-flex self-start items-center px-3 py-1 rounded-full text-xs font-semibold mt-auto"
+                  className="relative inline-flex self-start items-center px-3 py-1 rounded-full text-sm font-semibold mt-auto"
                   style={{ color: s.color, backgroundColor: `${s.color}1a`, border: `1px solid ${s.color}40` }}
                 >
                   {s.crown ? "👑 " : ""}{s.badge}
