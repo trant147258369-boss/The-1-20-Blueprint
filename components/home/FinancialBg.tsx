@@ -12,7 +12,7 @@ export function FinancialBg() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section ref={sectionRef} className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
+      <section ref={sectionRef} className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         {/* Atmospheric dark financial background image */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

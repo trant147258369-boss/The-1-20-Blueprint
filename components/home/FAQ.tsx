@@ -21,11 +21,11 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <MotionConfig reducedMotion="user">
-      <section id="faq" className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
+      <section id="faq" className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="relative z-10 max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-14">
             <Eyebrow>Before you talk yourself out of it</Eyebrow>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Every objection,
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">answered.</span>

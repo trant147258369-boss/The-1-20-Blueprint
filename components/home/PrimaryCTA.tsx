@@ -19,13 +19,13 @@ interface PrimaryCTAProps {
 }
 
 const sizeClasses: Record<Size, string> = {
-  lg: "px-16 py-8 text-2xl md:text-3xl gap-3",
+  lg: "px-11 py-5 text-xl md:text-2xl gap-2.5",
   md: "px-10 py-5 text-lg md:text-xl gap-2.5",
   sm: "px-8 py-4 text-base md:text-lg gap-2",
 };
 
 const arrowSize: Record<Size, string> = {
-  lg: "h-7 w-7",
+  lg: "h-5 w-5",
   md: "h-5 w-5",
   sm: "h-4 w-4",
 };

@@ -25,7 +25,7 @@ const setups: Setup[] = [
 export function Setups() {
   return (
     <MotionConfig reducedMotion="user">
-      <section id="setups" className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
+      <section id="setups" className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00e5a8]/[0.03] to-transparent pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
@@ -37,7 +37,7 @@ export function Setups() {
             className="text-center mb-16"
           >
             <Eyebrow>The core arsenal</Eyebrow>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Five setups.
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">One asymmetric edge.</span>

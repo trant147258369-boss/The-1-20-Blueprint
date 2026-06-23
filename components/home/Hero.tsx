@@ -312,7 +312,7 @@ export function Hero({
                 whileHover={{ scale: 1.06, boxShadow: "0 0 28px rgba(0,229,168,0.6)" }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 380, damping: 16 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center px-12 py-6 rounded-2xl border border-[#00e5a8]/45 text-[#33eab8] font-black text-xl md:text-2xl tracking-wide shadow-[0_12px_40px_-20px_rgba(0,229,168,0.5)] transition-colors duration-300 hover:bg-[#00e5a8] hover:text-[#040e1c]"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-9 py-4 rounded-2xl border border-[#00e5a8]/45 text-[#33eab8] font-black text-lg md:text-xl tracking-wide shadow-[0_12px_40px_-20px_rgba(0,229,168,0.5)] transition-colors duration-300 hover:bg-[#00e5a8] hover:text-[#040e1c]"
               >
                 Unlock 2 free lessons
               </motion.a>

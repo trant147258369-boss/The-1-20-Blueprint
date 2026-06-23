@@ -36,11 +36,11 @@ export function Free() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section id="free" className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden">
+      <section id="free" className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-14">
             <Eyebrow icon={Play}>Watch free — no card needed</Eyebrow>
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[0.95]">
               Two foundation lessons.
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">Zero cost.</span>

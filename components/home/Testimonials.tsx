@@ -60,12 +60,12 @@ function StarRating() {
 export function Testimonials() {
   return (
     <MotionConfig reducedMotion="user">
-      <section id="testimonials" className="relative w-full bg-[#020814] py-24 px-4 md:px-6 overflow-hidden">
+      <section id="testimonials" className="relative w-full bg-[#020814] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,229,168,0.14),transparent_28%),radial-gradient(circle_at_100%_40%,rgba(245,166,35,0.08),transparent_24%)] pointer-events-none" />
         <div className="relative z-10 max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <Eyebrow icon={Users}>Real members, real feedback</Eyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[1.05]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[1.05]">
               Trusted by members who moved from confusion to clarity.
             </h2>
             <p className="mt-5 text-base md:text-lg text-white/50 max-w-2xl mx-auto">

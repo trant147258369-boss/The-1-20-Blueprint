@@ -17,11 +17,11 @@ export function Footer({ seatsLeft = 8 }: FooterProps) {
   const year = new Date().getFullYear();
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative w-full bg-[#040e1c] py-24 px-4 md:px-6 overflow-hidden border-t border-white/[0.06]">
+      <section className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden border-t border-white/[0.06]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#00e5a8]/[0.05] to-transparent pointer-events-none" />
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <Eyebrow urgent icon={Flame}>{`Only ${seatsLeft} of 10 seats remain`}</Eyebrow>
-          <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-[-0.02em] text-white leading-[0.9] mb-8">
+          <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[0.9] mb-8">
             When it&apos;s full,
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#33eab8] via-white/90 to-[#00e5a8]">it&apos;s gone.</span>

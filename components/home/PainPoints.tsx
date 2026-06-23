@@ -12,7 +12,7 @@ const points = [
 export function PainPoints() {
   return (
     <MotionConfig reducedMotion="user">
-      <section className="relative w-full bg-[#020814] py-24 px-4 md:px-6 overflow-hidden">
+      <section className="relative w-full bg-[#020814] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,229,168,0.12),transparent_25%),radial-gradient(circle_at_100%_30%,rgba(245,166,35,0.08),transparent_22%)] pointer-events-none" />
         <div className="relative z-10 max-w-5xl mx-auto">
           <motion.div
@@ -23,7 +23,7 @@ export function PainPoints() {
             className="text-center mb-14"
           >
             <Eyebrow>Sound familiar?</Eyebrow>
-            <motion.h2 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }} className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-[-0.02em] text-white leading-[1.05]">
+            <motion.h2 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[1.05]">
               If you’re trading by feel, you’re probably carrying more noise than conviction.
             </motion.h2>
             <motion.p initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6, ease: "easeInOut", delay: 0.15 }} className="mt-5 text-lg md:text-xl text-white/55 max-w-3xl mx-auto leading-relaxed">
