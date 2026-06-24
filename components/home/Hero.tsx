@@ -6,38 +6,7 @@ import { Circle, Clock, Lock } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Eyebrow } from "./Eyebrow";
 import { PrimaryCTA } from "./PrimaryCTA";
-
-// Enrollment genuinely opens/closes monthly — the countdown targets the real
-// month-end in Vietnam time (ICT, UTC+7, no DST) and rolls itself to the next
-// month the instant one passes. No hardcoded date, no fake reset on refresh.
-const ICT_OFFSET_MS = 7 * 60 * 60 * 1000;
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-function monthEndUTC(ictYear: number, ictMonth: number): number {
-  // Last instant of `ictMonth` (0-indexed) at 23:59:59 ICT == day 0 of the following month
-  return Date.UTC(ictYear, ictMonth + 1, 0, 23, 59, 59) - ICT_OFFSET_MS;
-}
-
-function getNextDeadline(): Date {
-  const now = new Date();
-  const ictNow = new Date(now.getTime() + ICT_OFFSET_MS);
-  const ictYear = ictNow.getUTCFullYear();
-  const ictMonth = ictNow.getUTCMonth();
-
-  let deadlineMs = monthEndUTC(ictYear, ictMonth);
-  if (now.getTime() > deadlineMs) {
-    deadlineMs = monthEndUTC(ictYear, ictMonth + 1);
-  }
-  return new Date(deadlineMs);
-}
-
-function formatDeadlineLabel(deadline: Date): string {
-  const ict = new Date(deadline.getTime() + ICT_OFFSET_MS);
-  return `${MONTH_NAMES[ict.getUTCMonth()]} ${ict.getUTCDate()}`;
-}
+import { getNextDeadline } from "./deadline";
 
 function cn(...classes: Array<string | undefined | false | null>): string {
   return classes.filter(Boolean).join(" ");
@@ -113,7 +82,6 @@ export function Hero({
   const [mounted, setMounted] = useState(false);
   const [deadline, setDeadline] = useState<Date>(() => getNextDeadline());
   const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
-  const [urgencyIndex, setUrgencyIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
@@ -140,19 +108,6 @@ export function Hero({
     return () => clearInterval(id);
   }, [deadline]);
 
-  // Rotate the honest urgency phrasing per visit so it doesn't feel static.
-  // Picked client-side only (post-mount) to avoid a server/client text mismatch.
-  useEffect(() => {
-    setUrgencyIndex(Math.floor(Math.random() * 4));
-  }, []);
-
-  const deadlineLabel = formatDeadlineLabel(deadline);
-  const urgencyPhrasings = [
-    `Enrollment closes ${deadlineLabel}. No waitlist.`,
-    `Doors close ${deadlineLabel}. Next intake is next month.`,
-    `${deadlineLabel} is the cutoff for this intake.`,
-    "Few seats left this intake.",
-  ];
   const claimed = Math.max(0, seatsTotal - seatsLeft);
   const claimedPct = Math.round((claimed / seatsTotal) * 100);
 
@@ -333,29 +288,25 @@ export function Hero({
                 </motion.span>
               </motion.a>
             </motion.div>
-            <motion.p
+            <motion.div
               custom={4.5}
               variants={fadeUpVariants}
               initial="hidden"
               animate="visible"
-              className="mt-4 inline-flex items-center gap-2 text-sm text-white/40 tracking-wide"
+              className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-center"
             >
-              <motion.span
-                className="inline-flex h-1.5 w-1.5 rounded-full bg-[#33eab8]"
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-              />
-              You&apos;ll be chatting with Thomas directly. Lifetime access, live reviews included.
-            </motion.p>
-            <motion.div
-              custom={5}
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              className="mt-4 inline-flex items-center justify-center gap-2.5 text-base md:text-lg font-black uppercase tracking-[0.1em] text-[#f5a623]"
-            >
-              <Lock className="h-4 w-4 md:h-5 md:w-5 shrink-0" />
-              <span>{urgencyPhrasings[urgencyIndex]}</span>
+              <span className="inline-flex items-center gap-2 text-sm text-white/40 tracking-wide font-normal">
+                <motion.span
+                  className="inline-flex h-1.5 w-1.5 rounded-full bg-[#33eab8]"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                />
+                You&apos;ll be chatting with Thomas directly. Lifetime access, live reviews included.
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-[#f5a623]">
+                <Lock className="h-3.5 w-3.5 shrink-0" />
+                Few seats left this intake
+              </span>
             </motion.div>
           </div>
         </div>

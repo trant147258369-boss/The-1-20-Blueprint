@@ -1,6 +1,9 @@
 "use client";
 
 import { motion, MotionConfig } from "framer-motion";
+import { Lock } from "lucide-react";
+import { Eyebrow } from "./Eyebrow";
+import { getNextDeadline, formatDeadlineLabel } from "./deadline";
 
 interface Row { label: string; value: string; strong?: boolean }
 interface Tier {
@@ -72,11 +75,11 @@ const tiers: Tier[] = [
   },
 ];
 
-export function Pricing({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: { seatsLeft?: number; deadline?: string }) {
-  const deadlineLabel = new Date(deadline).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
+export function Pricing({ seatsLeft = 8 }: { seatsLeft?: number }) {
+  // Enrollment is genuinely monthly — this closes on the real current
+  // month-end and rolls itself to next month the instant that date passes.
+  // See components/home/deadline.ts for the date math.
+  const deadlineLabel = formatDeadlineLabel(getNextDeadline(), "short");
   const display = tiers.map((t) =>
     t.badgeKind === "scarce" ? { ...t, badge: `${seatsLeft} SEATS LEFT` } : t
   );
@@ -87,7 +90,7 @@ export function Pricing({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: { s
         <div className="relative z-10 max-w-6xl mx-auto">
           {/* Pricing mini chart removed during reset; premium widget will be added per spec */}
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-16">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-4">Lock your seat before it closes</p>
+            <Eyebrow urgent size="lg" icon={Lock}>Lock your seat before it closes</Eyebrow>
             <h2 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-[-0.02em] text-white leading-[0.92]">
               Three ways in.
               <br />
@@ -96,7 +99,7 @@ export function Pricing({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: { s
             <p className="mt-5 text-lg text-white/55 max-w-2xl mx-auto leading-relaxed">
               The full course includes over $7,900 in training, live review, and tools. Lock the current price and avoid the next increase before {deadlineLabel}.
             </p>
-            <p className="mt-4 text-base uppercase tracking-[0.28em] text-[#f5a623]">Enrollment closes {deadlineLabel}. No waitlist.</p>
+            <p className="mt-4 text-lg md:text-xl font-black uppercase tracking-[0.18em] text-[#f5a623]">Enrollment closes {deadlineLabel}. No waitlist.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">

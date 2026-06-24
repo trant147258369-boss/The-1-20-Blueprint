@@ -14,10 +14,9 @@ import Footer from "@/components/home/Footer";
 
 export default function Page() {
   const seatsLeft = 8;
-  const deadline = "2026-06-30T23:59:59";
   return (
     <>
-      <Navbar seatsLeft={seatsLeft} deadline={deadline} />
+      <Navbar seatsLeft={seatsLeft} />
       <main>
         <Hero seatsLeft={seatsLeft} seatsTotal={10} />
         <Callout />
@@ -40,7 +39,7 @@ export default function Page() {
           alt="Moody financial atmosphere"
         />
         <div id="pricing">
-          <Pricing seatsLeft={seatsLeft} deadline={deadline} />
+          <Pricing seatsLeft={seatsLeft} />
         </div>
         <ImageDivider
           src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1920&q=80&auto=format&fit=crop"

@@ -3,35 +3,58 @@
 import { motion, MotionConfig } from "framer-motion";
 import { useEffect, useState } from "react";
 import { PrimaryCTA } from "./PrimaryCTA";
+import { getNextDeadline } from "./deadline";
 
 interface NavbarProps {
   seatsLeft?: number;
-  deadline?: string;
 }
 function pad(n: number) {
   return n < 10 ? `0${n}` : `${n}`;
 }
+function cn(...classes: Array<string | undefined | false | null>): string {
+  return classes.filter(Boolean).join(" ");
+}
 
-export function Navbar({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: NavbarProps) {
+type Urgency = "calm" | "warn" | "critical";
+
+export function Navbar({ seatsLeft = 8 }: NavbarProps) {
   const [mounted, setMounted] = useState(false);
+  // Same shared month-end deadline as the Hero/Pricing countdowns — real
+  // date math, rolls to next month the instant this one passes.
+  const [deadline, setDeadline] = useState<Date>(() => getNextDeadline());
   const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [urgency, setUrgency] = useState<Urgency>("calm");
 
   useEffect(() => {
     setMounted(true);
-    const target = new Date(deadline).getTime();
+    const target = deadline.getTime();
     const tick = () => {
-      const diff = Math.max(0, target - Date.now());
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        setDeadline(getNextDeadline());
+        return;
+      }
       setT({
         d: Math.floor(diff / 86400000),
         h: Math.floor((diff / 3600000) % 24),
         m: Math.floor((diff / 60000) % 60),
         s: Math.floor((diff / 1000) % 60),
       });
+      setUrgency(diff < 60 * 60 * 1000 ? "critical" : diff < 6 * 60 * 60 * 1000 ? "warn" : "calm");
     };
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [deadline]);
+
+  const dotColor = urgency === "critical" ? "bg-[#ef4444]" : urgency === "warn" ? "bg-[#f5a623]" : "bg-[#33eab8]";
+  const digitColor = urgency === "critical" ? "text-[#ef4444]" : urgency === "warn" ? "text-[#f5a623]" : "text-white";
+  const digitGlow =
+    urgency === "critical"
+      ? "drop-shadow-[0_0_10px_rgba(239,68,68,0.55)]"
+      : urgency === "warn"
+      ? "drop-shadow-[0_0_10px_rgba(245,166,35,0.5)]"
+      : "drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]";
 
   const ticker = [
     "THE 1:20 BLUEPRINT",
@@ -49,7 +72,7 @@ export function Navbar({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: Navb
   return (
     <MotionConfig reducedMotion="user">
       <header className="sticky top-0 z-50 w-full">
-        <div className="w-full bg-[#02080f] border-b border-white/[0.06] overflow-hidden">
+        <div className="w-full bg-gradient-to-b from-[#03101c] via-[#02080f] to-[#03101c] border-t border-b border-[#00e5a8]/[0.1] overflow-hidden">
           <div className="max-w-7xl mx-auto flex items-center">
             <div className="flex-1 overflow-hidden relative h-11 flex items-center">
               <motion.div
@@ -58,16 +81,21 @@ export function Navbar({ seatsLeft = 8, deadline = "2026-06-30T23:59:59" }: Navb
                 transition={{ duration: 24, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
               >
                 {[...ticker, ...ticker, ...ticker, ...ticker].map((tk, i) => (
-                  <span key={i} className="text-sm tracking-[0.2em] text-white/40 uppercase flex items-center gap-8">
+                  <span key={i} className="text-sm tracking-[0.2em] text-white/65 uppercase flex items-center gap-8">
                     {tk}
-                    <span className="text-[#00e5a8]">•</span>
+                    <span className="text-[#33eab8] drop-shadow-[0_0_6px_rgba(51,234,184,0.9)]">•</span>
                   </span>
                 ))}
               </motion.div>
             </div>
-            <div className="hidden sm:flex items-center gap-3 px-5 shrink-0 border-l border-white/[0.06] h-11">
-              <span className="text-sm uppercase tracking-widest text-[#33eab8]">Closes</span>
-              <span className="text-sm font-black text-white tabular-nums">
+            <div className="hidden sm:flex items-center gap-3 px-5 shrink-0 border-l border-[#00e5a8]/[0.15] bg-white/[0.03] h-11">
+              <motion.span
+                className={cn("inline-flex h-1.5 w-1.5 rounded-full shrink-0", dotColor)}
+                animate={{ opacity: [1, 0.35, 1] }}
+                transition={{ duration: 1.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+              <span className="text-sm md:text-base font-black uppercase tracking-wide text-[#33eab8]">Closes</span>
+              <span className={cn("text-base md:text-lg font-black tabular-nums", digitColor, digitGlow)}>
                 {mounted ? `${pad(t.d)}d ${pad(t.h)}:${pad(t.m)}:${pad(t.s)}` : "--"}
               </span>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, MotionConfig } from "framer-motion";
+import { Eyebrow } from "./Eyebrow";
 
 function RRRow({
   label,
@@ -54,7 +55,7 @@ export function Callout() {
       <section className="relative w-full bg-[#040e1c] py-[5.5rem] px-4 md:px-6 overflow-hidden">
         <div className="relative z-10 max-w-5xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7 }} className="text-center mb-14">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#33eab8] mb-4">Why most traders bleed</p>
+            <Eyebrow size="lg">Why most traders bleed</Eyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-white leading-[1.05]">
               It&apos;s not your direction.
               <br />
