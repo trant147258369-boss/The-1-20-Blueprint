@@ -17,7 +17,7 @@ export const dashboardSetups: DashboardSetup[] = [
     name: "The Phantom Sweep",
     type: "Liquidity Sweep Reversal",
     color: "#00e5a8",
-    videoId: null,
+    videoId: "MfCUFtn8w7w",
     blurb: "How to fade the liquidity grab the moment retail gets stopped out.",
   },
   {
