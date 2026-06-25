@@ -33,9 +33,8 @@ export function Footer({ seatsLeft = 8 }: FooterProps) {
       <footer className="w-full bg-[#02080f] border-t border-white/[0.06] px-4 md:px-6 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <span className="inline-flex items-center justify-center h-11 w-14 rounded-xl bg-[#00e5a8] text-[#040e1c] font-black text-lg tabular-nums">1:20</span>
-              <span className="text-white font-extrabold uppercase tracking-tight text-base">The 1:20 Blueprint</span>
+            <div className="flex items-center">
+              <img src="/logo.png" alt="The 1:20 Blueprint" className="h-9 w-auto" />
             </div>
             <nav className="flex flex-wrap gap-6">
               {footNav.map(([l, h]) => (

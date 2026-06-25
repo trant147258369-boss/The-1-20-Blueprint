@@ -104,13 +104,12 @@ export function Navbar({ seatsLeft = 8 }: NavbarProps) {
 
         <div className="w-full bg-[#040e1c]/85 backdrop-blur-md border-b border-white/[0.07]">
           <div className="max-w-7xl mx-auto px-4 md:px-6 h-[80px] min-h-[80px] flex items-center justify-between gap-4" style={{ minHeight: 80 }}>
-            <a href="#" className="flex items-center gap-3 shrink-0">
-              <span className="inline-flex items-center justify-center h-14 w-16 rounded-xl bg-gradient-to-br from-[#33eab8] to-[#00b386] text-[#040e1c] font-black text-2xl md:text-3xl tabular-nums shadow-[0_0_22px_rgba(0,229,168,0.5)]">
-                1:20
-              </span>
-              <span className="hidden sm:block text-white font-black tracking-tight uppercase text-2xl md:text-3xl">
-                Blueprint
-              </span>
+            <a href="#" className="flex items-center shrink-0">
+              <img
+                src="/logo.png"
+                alt="The 1:20 Blueprint"
+                className="h-11 md:h-[52px] w-auto"
+              />
             </a>
             <nav className="hidden md:flex items-center gap-10" style={{ minHeight: '80px' }}>
               {links.map(([l, h]) => (

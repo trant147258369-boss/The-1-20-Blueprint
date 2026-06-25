@@ -58,7 +58,7 @@ export default function DashboardPage() {
         <header className="sticky top-0 z-40 w-full bg-[#040e1c]/85 backdrop-blur-md border-b border-white/[0.07]">
           <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <span className="inline-flex items-center justify-center h-9 w-12 rounded-lg bg-[#00e5a8] text-[#040e1c] font-black text-base tabular-nums">1:20</span>
+              <img src="/logo.png" alt="The 1:20 Blueprint" className="h-9 w-auto" />
               <span className="hidden sm:block text-white font-extrabold uppercase tracking-tight text-sm">Member Dashboard</span>
             </div>
             <a href="/" className="inline-flex items-center gap-1.5 text-sm text-white/55 hover:text-white transition-colors">
