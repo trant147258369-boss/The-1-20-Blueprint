@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "The 1:20 Trading Blueprint",
   description:
     "Five Smart Money Concept setups, one asymmetric framework. Learn to read liquidity, structure, and order blocks the way institutions move price.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
